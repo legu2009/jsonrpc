@@ -3,16 +3,17 @@
 <head>
     <script type="text/javascript" src="../jsonRpc.js" ></script>
     <script>
-        /*
-        var _guid = guid();
+        //从消息逻辑本身，增加uuid,标示自己的消息，回调只对自己的消息处理
         function guid() {
             return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
                 var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
                 return v.toString(16);
             });
         }
+        var jsonRpc = JsonRpc();
+        var _guid = guid();
         jsonRpc.onResult = function (mess) {
-            if (mess._guid && mess._guid != _guid) {
+            if (!mess._guid || mess._guid != _guid) {
                 return false;
             }
         }
@@ -22,44 +23,18 @@
             } else {
                 obj._guid = mess._guid;
             }
-            console.log('jsonRpc._send', JSON.stringify(obj));
+            console.log('消息解析：', JSON.stringify(obj));
             this._onMessage(JSON.stringify(obj));
         }
-        */
-
-        jsonRpc._send = function (obj, mess) {
-            console.log('jsonRpc._mess', JSON.stringify(obj));
-            this._onMessage(JSON.stringify(obj));
-        }
-
         jsonRpc._onMessage = function (str) {
-            //console.log('jsonRpc._get', str);
             this.onMessage(JSON.parse(str));
         };
-
         jsonRpc.addCommand('subtract', function (subtrahend = 10, minuend = 20) {
             return subtrahend - minuend;
         });
-
         jsonRpc.exec('subtract', [23, 42], function (k) {
-            console.log('server back', k);
-        });
-
-        jsonRpc.exec('subtract', {"subtrahend": 23, "minuend": 42}, function (k) {
-            console.log('server back', k);
-        });
-
-        jsonRpc.exec('foobar', ["bar", "baz"]);
-        
-        jsonRpc.exec('foobar', ["bar", "baz"], function (k) {
-            console.log('subtract server back', k);
-        });
-
-        jsonRpc.exec('subtract', {"subtrahend": 42, "minuend": 23});
-
-        jsonRpc.exec('subtract', function (k) {
-            console.log('server back', k);
-        });
+            console.log('运行结果：', k, 'subtract', [23, 42]);
+        });        
     </script>
 </head>
 </html>

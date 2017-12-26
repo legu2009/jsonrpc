@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <script type="text/javascript" src="../jsonRpc.js" ></script>
+    <script>
+        var jsonRpc = JsonRpc();
+        jsonRpc._send = function (obj, mess) {
+            console.log('消息解析：', JSON.stringify(obj));
+            this._onMessage(JSON.stringify(obj));
+        }
+
+        jsonRpc._onMessage = function (str) {
+            this.onMessage(JSON.parse(str));
+        };
+
+        jsonRpc.addCommand('fn', function () {
+            var running = JsonRpc.running;
+            running.success('现在时间: ' + new Date);
+            setTimeout(function () {
+                running.success('现在时间: ' + new Date);
+            }, 3000);
+        });
+
+        jsonRpc.addCommand('fn1', function () {
+            var running = JsonRpc.running;
+            running.success('现在时间: ' + new Date);
+            setTimeout(function () {
+                running.success('现在时间: ' + new Date);
+            }, 3000);
+        });
+
+        jsonRpc.exec({always: true}, 'fn', function (k) {
+            console.log('运行结果：', k, 'fn');
+        });
+
+        jsonRpc.exec('fn1', function (k) {
+            console.log('运行结果：', k, 'fn1');
+        });
+
+    </script>
+</head>
+</html>

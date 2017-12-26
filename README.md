@@ -14,13 +14,18 @@ jsonrpc.js 只要是能够运行js的环境都可以。
 
 ## API    
 
-[jsonRpc.addCommand(name, func)]() Function
+[jsonRpc.addCommand(name, func, opt)]() Function
 
 注册可以被远程端调用的方法
 
 #### Arguments
 - [name(String)](): 方法的名字
 - [func(Function)](): 对应的方法
+- [opt(Object)](): 
+    {
+        sync: false, //默认情况，函数返回不是Promise且为undefind时不调用回调
+        always: false, //默认情况，函数回调一次就不在调用回调，设置true可以一直回调，但是需要使用
+    }
 
 
 [jsonRpc.removeCommand(name)]() Function
@@ -31,11 +36,16 @@ jsonrpc.js 只要是能够运行js的环境都可以。
 - [name(String)](): 方法的名字
 
 
-[jsonRpc.exec(name, [params], [func])]() Function
+[jsonRpc.exec([extend], name, [params], [func])]() Function
 
 发起远程调用，调用远端name的方法，参数为params（JSON-RPC，协议，支持Arrary和Object），获得返回的运行结果的时候，运行对应的func方法
 
 #### Arguments
+- [extend](): 
+    {
+        always: true, //函数回调不会清除引用，用于响应多child消息回调
+        ...otherProps: //Object.assign 扩展obj
+    }
 - [name(String)](): 远端方法的名字
 - [params(Arrary or Object)](): 运行远端方法时候的参数(形式同JSON-RPC协议 的 params）
 - [func(Function(reresult messages))](): 返回的运行结果的时候，运行对应的方法，没有该参数，为通知方式发送消息

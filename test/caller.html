@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <script type="text/javascript" src="../jsonRpc.js" ></script>
+    <script>
+        //从消息逻辑本身，实现执行方法制定guid
+        function guid() {
+            return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+                var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
+                return v.toString(16);
+            });
+        }
+        var jsonRpc = JsonRpc();
+        var _guid = guid();
+
+        jsonRpc.onCall = function (mess) {
+            if (mess._call === 'all' ||  mess._call === _guid) {
+                return true;
+            }
+            return false;
+        }
+
+        jsonRpc._send = function (obj, mess) {
+            if (!mess) {
+                obj._call = obj._call || 'all';
+            }
+            console.log('消息解析：', JSON.stringify(obj));
+            this._onMessage(JSON.stringify(obj));
+        }
+
+        jsonRpc._onMessage = function (str) {
+            this.onMessage(JSON.parse(str));
+        };
+
+        jsonRpc.addCommand('subtract', function (subtrahend = 10, minuend = 20) {
+            return subtrahend - minuend;
+        });
+
+        jsonRpc.exec('subtract', [23, 42], function (k) {
+            console.log('运行结果：', k, 'all subtract', [23, 42]);
+        });
+        
+        jsonRpc.exec({_call: _guid}, 'subtract', [23, 42], function (k) {
+            console.log('运行结果：', k, 'guid subtract', [23, 42]);
+        }); 
+
+        jsonRpc.exec({_call: 'wgu'}, 'subtract', [23, 42], function (k) {
+            console.log('运行结果：', k, 'wgu subtract', [23, 42]);
+        }); 
+    </script>
+</head>
+</html>
