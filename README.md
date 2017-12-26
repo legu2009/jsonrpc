@@ -71,3 +71,25 @@ jsonrpc.js 只要是能够运行js的环境都可以。
 [jsonRpc.onResult(mess)]() Function  
 
 本地可以理解为客户端，接收到返回消息，执行回调之前
+
+## EXAMPLE
+
+没有实际项目应用，只是觉得需要支持
+
+#### test.html
+基本消息传递的例子
+
+#### sync.html
+同步函数情况下，对返回值undefind的处理
+
+#### send.html
+通过_call，从消息体本身的设计，限制服务端执行逻辑
+
+#### result.html
+通过_guid，从消息体本身的设计，限制客户端对回调的执行
+
+#### always1.html
+应对服务器端消息 分多次返回
+
+#### always2.html
+应对客户端发送多个服务器端消息，都进行响应
