@@ -1,0 +1,21 @@
+{
+  "name": "jsonrpc",
+  "version": "1.0.0",
+  "description": "use jsonrpc remote procedure call",
+  "main": "jsonRpc.js",
+  "umd:main": "jsonRpc.umd.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/legu2009/jsonrpc"
+  },
+  "author": "legu2009",
+  "license": "MIT",
+  "devDependencies": {
+  },
+  "dependencies": {},
+  "keywords": [
+    "JSON-RPC"
+  ]
+}

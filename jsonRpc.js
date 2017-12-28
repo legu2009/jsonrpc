@@ -218,3 +218,5 @@ var JsonRpc = (function (undefined) {
         }
     }
 })();
+
+exports.JsonRpc = JsonRpc;
